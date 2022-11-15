@@ -32,20 +32,20 @@ Y = 1
 Z = 1
 
 A = 99
-B = 11 # was 11
+B = 11
 C = 1
 
 # scale and center
-SX = 2
+SX = 1
 SY = 1
-CX = 50
-CY = 100
+CX = 120
+CY = 20
 
 for i in range(3000):
     Y += X - (X * Z - Y) / A
     X += (Y - X) / B
     Z += X * Y / Z - C
-    p = [X * SX + CX, Y * SY + CY]
+    p = [X * SX + CX, Z * SY + CY]
     COORDS.append(p)
 
 ad.draw_path(COORDS)
