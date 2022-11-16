@@ -49,10 +49,10 @@ PRECOMPUTED_DIRECTIONS = [
     ]), CARDINAL) for t in range(POLYSIDES)
 ]
 
-def gen_walk():
-    COORDS = []
+def gen_walk(start_x, start_y):
+    COORDS = [[start_x, start_y]]
     pos = np.array([0,0])
-    dir = 0
+    dir = random.randint(0, len(PRECOMPUTED_DIRECTIONS)-1)
     for i in range(STEPS):
         # random left/right choice
         dir += (random.randint(0,1) % 2)*2-1
@@ -61,7 +61,7 @@ def gen_walk():
         pos = np.add(pos, PRECOMPUTED_DIRECTIONS[dir]*STEP)
         pos = np.clip(pos, -EXTENT, EXTENT)
         # find position on paper (in mm)
-        actual = np.add(pos, [CX, CY])
+        actual = np.add(pos, [start_x, start_y])
         COORDS.append(actual.tolist())
     return COORDS
 
@@ -116,6 +116,6 @@ def svg_preview(*paths):
         fsvg.write(svgout)
 
 # --- main --------------
-WALK = gen_walk()
+WALK = gen_walk(CX,CY)
 # axi_draw(BORDER, WALK)
 svg_preview(BORDER, WALK)
