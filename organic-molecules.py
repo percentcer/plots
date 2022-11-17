@@ -119,11 +119,11 @@ _wid = 10
 _gap = 18
 WALKS = [
     gen_walk(
-        CX + (i % _wid)  * _gap - (_wid * _gap * 0.5 - _gap * 0.5),
-        CY + (i // _wid) * _gap - (_wid * _gap * 0.5 - _gap * 0.5)
+        CX + (i % _wid - (_wid - 1) * 0.5) * _gap,
+        CY + (i // _wid - (_wid - 1) * 0.5) * _gap
         ) 
         for i in range(100)
     ]
 
-axi_draw(BORDER, *WALKS)
+# axi_draw(BORDER, *WALKS)
 svg_preview(BORDER, *WALKS)
