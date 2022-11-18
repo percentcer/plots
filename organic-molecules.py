@@ -27,18 +27,19 @@ SY = 1
 
 # --- drawing config ----------------------------------------------------------
 POLYSIDES = 6
-EXTENT = 100
+EXT_WIDTH = (PAGE_WIDTH // 2) * 0.8
+EXT_HEIGHT = (PAGE_HEIGHT // 2) * 0.8
 STEP = 1
 
 ARC = TAU / POLYSIDES
-STEPS = 18
+STEPS = 100
 
 BORDER = [
-    [CX-EXTENT, CY-EXTENT],
-    [CX+EXTENT, CY-EXTENT],
-    [CX+EXTENT, CY+EXTENT],
-    [CX-EXTENT, CY+EXTENT],
-    [CX-EXTENT, CY-EXTENT]
+    [CX-EXT_WIDTH, CY-EXT_HEIGHT],
+    [CX+EXT_WIDTH, CY-EXT_HEIGHT],
+    [CX+EXT_WIDTH, CY+EXT_HEIGHT],
+    [CX-EXT_WIDTH, CY+EXT_HEIGHT],
+    [CX-EXT_WIDTH, CY-EXT_HEIGHT]
 ]
 
 CARDINAL = np.array([1,0])
@@ -50,19 +51,18 @@ PRECOMPUTED_DIRECTIONS = [
 ]
 
 def gen_walk(start_x, start_y):
-    COORDS = [[start_x, start_y]]
+    COORDS = [np.array([start_x, start_y])]
     pos = np.array([0,0])
     dir = random.randint(0, len(PRECOMPUTED_DIRECTIONS)-1)
     for i in range(STEPS):
         # random left/right choice
         dir += (random.randint(0,1) % 2)*2-1
         dir = dir % len(PRECOMPUTED_DIRECTIONS)
-        # update position (clipped to EXTENT)
+        # update position
         pos = np.add(pos, PRECOMPUTED_DIRECTIONS[dir]*STEP)
-        pos = np.clip(pos, -EXTENT, EXTENT)
-        # find position on paper (in mm)
+        # offset to actual position on paper (in mm)
         actual = np.add(pos, [start_x, start_y])
-        COORDS.append(actual.tolist())
+        COORDS.append(actual)
     return COORDS
 
 def axi_draw(*paths):
@@ -124,6 +124,18 @@ WALKS = [
         ) 
         for i in range(100)
     ]
+SPLITWALKS = []
+
+# for each path, remove all segments that are out of our bounds (this may produce new paths)
+for w in WALKS:
+    _nwalk = []
+    for seg in w:
+        if ((seg >= [CX-EXT_WIDTH, CY-EXT_HEIGHT]) & (seg <= [CX+EXT_WIDTH, CY+EXT_HEIGHT])).all(axis=0):
+            _nwalk.append(seg.tolist())
+        else:
+            SPLITWALKS.append(_nwalk)
+            _nwalk = []
+    SPLITWALKS.append(_nwalk)
 
 # axi_draw(BORDER, *WALKS)
-svg_preview(BORDER, *WALKS)
+svg_preview(BORDER, *SPLITWALKS)
