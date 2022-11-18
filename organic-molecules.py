@@ -132,9 +132,11 @@ for w in WALKS:
     for seg in w:
         if ((seg >= [CX-EXT_WIDTH, CY-EXT_HEIGHT]) & (seg <= [CX+EXT_WIDTH, CY+EXT_HEIGHT])).all(axis=0):
             _nwalk.append(seg.tolist())
-        else:
+        elif len(_nwalk):
             SPLITWALKS.append(_nwalk)
             _nwalk = []
+        else:
+            continue
     SPLITWALKS.append(_nwalk)
 
 # axi_draw(BORDER, *WALKS)
