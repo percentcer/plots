@@ -5,13 +5,12 @@
 # https://github.com/evil-mad/axidraw
 # http://axidraw.com/docs
 
-import sys
 import math
 import random
 import numpy as np
 
 from common.math import TAU
-from common.page import PAGE_WIDTH, PAGE_HEIGHT
+from common.page import PAGE_WIDTH, PAGE_HEIGHT, gen_border
 from common.svg import svg_preview
 
 # --- draw transforms ---------------------------------------------------------
@@ -28,14 +27,6 @@ STEP = 1
 
 ARC = TAU / POLYSIDES
 STEPS = 100
-
-BORDER = [
-    [CX-EXT_WIDTH, CY-EXT_HEIGHT],
-    [CX+EXT_WIDTH, CY-EXT_HEIGHT],
-    [CX+EXT_WIDTH, CY+EXT_HEIGHT],
-    [CX-EXT_WIDTH, CY+EXT_HEIGHT],
-    [CX-EXT_WIDTH, CY-EXT_HEIGHT]
-]
 
 CARDINAL = np.array([1,0])
 PRECOMPUTED_DIRECTIONS = [
@@ -84,6 +75,9 @@ for w in WALKS:
         else:
             continue
     SPLITWALKS.append(_nwalk)
+
+# --- main --------------
+BORDER = gen_border(CX, CY, EXT_WIDTH, EXT_HEIGHT)
 
 # axi_draw_paths(BORDER, *WALKS)
 svg_preview(BORDER, *SPLITWALKS)

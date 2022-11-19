@@ -1,17 +1,14 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -#-
+
 # https://axidraw.com/doc/py_api/
 # https://github.com/evil-mad/axidraw
 # http://axidraw.com/docs
 
-from common.page import PAGE_WIDTH, PAGE_HEIGHT
+from common.page import PAGE_WIDTH, PAGE_HEIGHT, gen_border
 from common.svg import svg_preview
 
 # lorenz from https://github.com/ubilabs/axidraw/blob/master/src/draw-lorenz.js
-X = 9
-Y = 1
-Z = 1
-
 A = 99
 B = 11
 C = 1
@@ -20,30 +17,25 @@ C = 1
 CX = PAGE_WIDTH / 2
 CY = PAGE_HEIGHT / 2
 
-MAG = 2
+MAG = 3
 SX = (PAGE_WIDTH / PAGE_HEIGHT) * MAG
 SY = 1 * MAG
 
 EXT_WIDTH = (PAGE_WIDTH // 2) * 0.8
 EXT_HEIGHT = (PAGE_HEIGHT // 2) * 0.8
 
-BORDER = [
-    [CX-EXT_WIDTH, CY-EXT_HEIGHT],
-    [CX+EXT_WIDTH, CY-EXT_HEIGHT],
-    [CX+EXT_WIDTH, CY+EXT_HEIGHT],
-    [CX-EXT_WIDTH, CY+EXT_HEIGHT],
-    [CX-EXT_WIDTH, CY-EXT_HEIGHT]
-]
-
-def gen(start_x, start_y):
-    global X, Y, Z
+def gen(p_x, p_y, p_z):
     COORDS = []
     for _ in range(5000):
-        Y += X - (X * Z - Y) / A
-        X += (Y - X) / B
-        Z += X * Y / Z - C
-        p = [X * SX + start_x, Y * SY + start_y]
-        COORDS.append(p)
+        p_x += (p_y - p_x) / B
+        p_y += p_x - (p_x * p_z - p_y) / A
+        p_z += p_x * p_y / p_z - C
+        COORDS.append([p_x, p_y])
     return COORDS
 
-svg_preview(BORDER, gen(CX, CY))
+# --- main --------------
+PATH = gen(9, 1, 1)
+BORDER = gen_border(CX, CY, EXT_WIDTH, EXT_HEIGHT)
+
+# axi_draw_paths(BORDER, PATH)
+svg_preview(BORDER, PATH)
