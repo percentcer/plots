@@ -4,29 +4,10 @@
 # https://github.com/evil-mad/axidraw
 # http://axidraw.com/docs
 
-import sys
-import math
-import time
-from pyaxidraw import axidraw
-
-# --- boilerplate -------------------------------------------------------------
-ad = axidraw.AxiDraw() # Initialize class
-
-ad.interactive()            # Enter interactive mode
-connected = ad.connect()    # Open serial port to AxiDraw
-
-if not connected:
-    sys.exit() # end script
-
-ad.options.speed_pendown = 40  # set pen-down speed to slow
-ad.options.units = 2           # Switch to mm units
-ad.update()                    # Process changes to options
-
-ad.moveto(0,0)                 # Pen-up return home
-# --- end boilerplate ---------------------------------------------------------
+from common.page import PAGE_WIDTH, PAGE_HEIGHT
+from common.svg import svg_preview
 
 # lorenz from https://github.com/ubilabs/axidraw/blob/master/src/draw-lorenz.js
-COORDS = []
 X = 9
 Y = 1
 Z = 1
@@ -36,20 +17,33 @@ B = 11
 C = 1
 
 # scale and center
-SX = 1
-SY = 1
-CX = 120
-CY = 20
+CX = PAGE_WIDTH / 2
+CY = PAGE_HEIGHT / 2
 
-for i in range(3000):
-    Y += X - (X * Z - Y) / A
-    X += (Y - X) / B
-    Z += X * Y / Z - C
-    p = [X * SX + CX, Z * SY + CY]
-    COORDS.append(p)
+MAG = 2
+SX = (PAGE_WIDTH / PAGE_HEIGHT) * MAG
+SY = 1 * MAG
 
-ad.draw_path(COORDS)
+EXT_WIDTH = (PAGE_WIDTH // 2) * 0.8
+EXT_HEIGHT = (PAGE_HEIGHT // 2) * 0.8
 
-# --- finit -------------------------------------------------------------------
-ad.moveto(0,0)              # Pen-up return home
-ad.disconnect()             # Close serial port to AxiDraw
+BORDER = [
+    [CX-EXT_WIDTH, CY-EXT_HEIGHT],
+    [CX+EXT_WIDTH, CY-EXT_HEIGHT],
+    [CX+EXT_WIDTH, CY+EXT_HEIGHT],
+    [CX-EXT_WIDTH, CY+EXT_HEIGHT],
+    [CX-EXT_WIDTH, CY-EXT_HEIGHT]
+]
+
+def gen(start_x, start_y):
+    global X, Y, Z
+    COORDS = []
+    for _ in range(5000):
+        Y += X - (X * Z - Y) / A
+        X += (Y - X) / B
+        Z += X * Y / Z - C
+        p = [X * SX + start_x, Y * SY + start_y]
+        COORDS.append(p)
+    return COORDS
+
+svg_preview(BORDER, gen(CX, CY))

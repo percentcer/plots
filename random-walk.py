@@ -9,12 +9,10 @@ import sys
 import math
 import random
 import numpy as np
-from pyaxidraw import axidraw
 
-# --- page setup (mm) ---------------------------------------------------------
-PAGE_WIDTH = 350
-PAGE_HEIGHT = 250
-PAGE_MARGIN = 5
+from common.math import TAU
+from common.page import PAGE_WIDTH, PAGE_HEIGHT, PAGE_MARGIN
+from common.svg import svg_preview
 
 # --- math --------------------------------------------------------------------
 TAU = 6.28
@@ -65,30 +63,6 @@ def gen_walk(start_x, start_y):
         COORDS.append(actual.tolist())
     return COORDS
 
-def axi_draw(*paths):
-    # --- init ----------------------------------------------------------------
-    ad = axidraw.AxiDraw() # Initialize class
-
-    ad.interactive()            # Enter interactive mode
-    connected = ad.connect()    # Open serial port to AxiDraw
-
-    if not connected:
-        sys.exit() # end script
-
-    ad.options.speed_pendown = 40  # set pen-down speed to slow
-    ad.options.units = 2           # Switch to mm units
-    ad.update()                    # Process changes to options
-
-    ad.moveto(0,0)                 # Pen-up return home
-
-    # --- actual draw ---------------------------------------------------------
-    for p in paths:
-        ad.draw_path(p)
-
-    # --- finit ---------------------------------------------------------------
-    ad.moveto(0,0)              # Pen-up return home
-    ad.disconnect()             # Close serial port to AxiDraw
-
 # --- svg preview -------------------------------------------------------------
 def svg_ptext(points):
     return ' '.join([f"{p[0]},{p[1]}" for p in points])
@@ -117,5 +91,5 @@ def svg_preview(*paths):
 
 # --- main --------------
 WALK = gen_walk(CX,CY)
-# axi_draw(BORDER, WALK)
+# axi_draw_paths(BORDER, WALK)
 svg_preview(BORDER, WALK)

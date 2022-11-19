@@ -9,15 +9,10 @@ import sys
 import math
 import random
 import numpy as np
-from pyaxidraw import axidraw
 
-# --- page setup (mm) ---------------------------------------------------------
-PAGE_WIDTH = 350
-PAGE_HEIGHT = 250
-PAGE_MARGIN = 5
-
-# --- math --------------------------------------------------------------------
-TAU = 6.28
+from common.math import TAU
+from common.page import PAGE_WIDTH, PAGE_HEIGHT
+from common.svg import svg_preview
 
 # --- draw transforms ---------------------------------------------------------
 CX = PAGE_WIDTH / 2
@@ -65,55 +60,6 @@ def gen_walk(start_x, start_y):
         COORDS.append(actual)
     return COORDS
 
-def axi_draw(*paths):
-    # --- init ----------------------------------------------------------------
-    ad = axidraw.AxiDraw() # Initialize class
-    ad.interactive()            # Enter interactive mode
-
-    ad.options.speed_pendown = 40  # set pen-down speed to slow
-    ad.options.units = 2           # Switch to mm units
-
-    connected = ad.connect()    # Open serial port to AxiDraw
-    if not connected:
-        sys.exit() # end script
-
-    # ad.update()                  # Process changes to options
-    ad.moveto(0,0)                 # Pen-up return home
-
-    # --- actual draw ---------------------------------------------------------
-    for p in paths:
-        ad.draw_path(p)
-
-    # --- finit ---------------------------------------------------------------
-    ad.moveto(0,0)              # Pen-up return home
-    ad.disconnect()             # Close serial port to AxiDraw
-
-# --- svg preview -------------------------------------------------------------
-def svg_pointlist(points):
-    return ' '.join([f"{p[0]},{p[1]}" for p in points])
-    
-def svg_preview(*paths):
-    polylines = [f'<polyline points="{svg_pointlist(p)}" fill="none" stroke="black" stroke-width="0.2"/>' for p in paths]
-    svgout = f"""<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <svg
-            xmlns:dc="http://purl.org/dc/elements/1.1/"
-            xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-            xmlns:svg="http://www.w3.org/2000/svg"
-            xmlns="http://www.w3.org/2000/svg"
-            version="1.1"
-            id="test"
-            viewBox="0 0 {PAGE_WIDTH + PAGE_MARGIN * 2} {PAGE_HEIGHT + PAGE_MARGIN * 2}"
-            height="{PAGE_HEIGHT + PAGE_MARGIN * 2}mm"
-            width="{PAGE_WIDTH + PAGE_MARGIN * 2}mm">
-        <g transform="translate({PAGE_MARGIN},{PAGE_MARGIN})">
-            <rect fill="none" stroke="blue" stroke-width="0.2" width="{PAGE_WIDTH}" height="{PAGE_HEIGHT}"/>
-            {polylines}
-        </g>
-        </svg>
-        """
-    with open('preview.svg','w') as fsvg:
-        fsvg.write(svgout)
-
 # --- main --------------
 _wid = 10
 _gap = 18
@@ -139,5 +85,5 @@ for w in WALKS:
             continue
     SPLITWALKS.append(_nwalk)
 
-# axi_draw(BORDER, *WALKS)
+# axi_draw_paths(BORDER, *WALKS)
 svg_preview(BORDER, *SPLITWALKS)
