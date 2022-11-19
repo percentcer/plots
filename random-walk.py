@@ -20,8 +20,9 @@ SX = 1
 SY = 1
 
 # --- drawing config ----------------------------------------------------------
+EXT = 100
+
 POLYSIDES = 6
-EXTENT = 100
 STEP = 1
 
 ARC = TAU / POLYSIDES
@@ -45,7 +46,7 @@ def gen_walk(start_x, start_y):
         dir = dir % len(PRECOMPUTED_DIRECTIONS)
         # update position (clipped to EXTENT)
         pos = np.add(pos, PRECOMPUTED_DIRECTIONS[dir]*STEP)
-        pos = np.clip(pos, -EXTENT, EXTENT)
+        pos = np.clip(pos, -EXT, EXT)
         # find position on paper (in mm)
         actual = np.add(pos, [start_x, start_y])
         COORDS.append(actual.tolist())
@@ -53,7 +54,7 @@ def gen_walk(start_x, start_y):
 
 # --- main --------------
 WALK = gen_walk(CX,CY)
-BORDER = gen_border(CX, CY, EXTENT, EXTENT)
+BORDER = gen_border(CX, CY, EXT, EXT)
 
 # axi_draw_paths(BORDER, WALK)
 svg_preview(BORDER, WALK)

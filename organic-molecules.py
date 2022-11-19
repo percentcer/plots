@@ -79,5 +79,5 @@ for w in WALKS:
 # --- main --------------
 BORDER = gen_border(CX, CY, EXT_WIDTH, EXT_HEIGHT)
 
-# axi_draw_paths(BORDER, *WALKS)
+# axi_draw_paths(BORDER, *SPLITWALKS)
 svg_preview(BORDER, *SPLITWALKS)

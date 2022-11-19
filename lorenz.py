@@ -8,21 +8,22 @@
 from common.page import PAGE_WIDTH, PAGE_HEIGHT, gen_border
 from common.svg import svg_preview
 
+# --- draw transforms ---------------------------------------------------------
+MAG = 3
+CX = PAGE_WIDTH / 2
+CY = PAGE_HEIGHT / 2
+SX = (PAGE_WIDTH / PAGE_HEIGHT) * MAG
+SY = 1 * MAG
+
+# --- drawing config ----------------------------------------------------------
+EXT_WIDTH = (PAGE_WIDTH // 2) * 0.8
+EXT_HEIGHT = (PAGE_HEIGHT // 2) * 0.8
+
 # lorenz from https://github.com/ubilabs/axidraw/blob/master/src/draw-lorenz.js
 A = 99
 B = 11
 C = 1
 
-# scale and center
-CX = PAGE_WIDTH / 2
-CY = PAGE_HEIGHT / 2
-
-MAG = 3
-SX = (PAGE_WIDTH / PAGE_HEIGHT) * MAG
-SY = 1 * MAG
-
-EXT_WIDTH = (PAGE_WIDTH // 2) * 0.8
-EXT_HEIGHT = (PAGE_HEIGHT // 2) * 0.8
 
 def gen(p_x, p_y, p_z):
     COORDS = []
