@@ -42,7 +42,7 @@ def gen_walk(start_x, start_y):
     dir = random.randint(0, len(PRECOMPUTED_DIRECTIONS)-1)
     for _ in range(STEPS):
         # random left/right choice
-        dir += (random.randint(0,1) % 2)*2-1
+        dir += random.randint(0,1)*2-1
         dir = dir % len(PRECOMPUTED_DIRECTIONS)
         # update position (clipped to EXTENT)
         pos = np.add(pos, PRECOMPUTED_DIRECTIONS[dir]*STEP)
