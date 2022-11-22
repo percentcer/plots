@@ -1,4 +1,5 @@
 from pyaxidraw import axidraw
+import sys
 
 def axi_draw_paths(*paths):
     # --- init ----------------------------------------------------------------
