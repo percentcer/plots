@@ -9,6 +9,7 @@ import numpy as np
 import random
 
 import common.hexgrid as hg
+from common.axidraw import axi_draw_paths
 from common.page import PAGE_WIDTH, PAGE_HEIGHT, gen_border
 from common.svg import svg_preview
 
