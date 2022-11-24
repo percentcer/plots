@@ -11,8 +11,8 @@ import random
 
 import common.hexgrid as hg
 from common.axidraw import axi_draw_svg, axi_draw_paths
-from common.page import PAGE_WIDTH, PAGE_HEIGHT, gen_border
-from common.svg import svg_circles, svg_polylines, svg_doc, svg_write, svg_rects
+from common.page import PAGE_WIDTH, PAGE_HEIGHT
+from common.svg import svg_circles, svg_doc, svg_write, svg_rects
 from common.math import clamp
 
 # --- draw transforms ---------------------------------------------------------
@@ -67,11 +67,9 @@ def process(_walk, _radfn):
 
 
 # svgcircles = svg_circles(*process(gen_walk(0, 0, 0), lambda c: clamp(c, 1, 3)*0.5))
-# svgcircles = svg_circles(*process(gen_walk(0, 0, 0), lambda c: c * 0.25))
-svgcircles_small = svg_circles(*process(gen_walk(0, 0, 0), lambda c: 0.35))
-svgcircles_mid = svg_circles(*process(gen_walk(0, 0, 0), lambda c: 0.35*2))
-svgcircles_large = svg_circles(*process(gen_walk(0, 0, 0), lambda c: 0.35*3))
-svgcircles_xlarge = svg_circles(*process(gen_walk(0, 0, 0), lambda c: 0.35*4))
+svgcircles_small = svg_circles(*process(gen_walk(0, 0, 0), lambda c: 0.5))
+svgcircles_mid = svg_circles(*process(gen_walk(0, 0, 0), lambda c: 0.5*2))
+svgcircles_large = svg_circles(*process(gen_walk(0, 0, 0), lambda c: 0.5*3))
 
 svgborder = svg_rects([CX-EXT_W, CY-EXT_H, EXT_W*2, EXT_H*2])
 
@@ -79,7 +77,7 @@ svgborder = svg_rects([CX-EXT_W, CY-EXT_H, EXT_W*2, EXT_H*2])
 # doc = svg_doc(*svgcircles)
 # doc = svg_doc(*svgborder, *svgcircles)
 # doc = svg_doc(*svgcircles_small, *svgcircles_mid, *svgcircles_large)
-doc = svg_doc(*svgborder, *svgcircles_small, *svgcircles_mid, *svgcircles_large, *svgcircles_xlarge)
+doc = svg_doc(*svgborder, *svgcircles_small, *svgcircles_mid, *svgcircles_large)
 
 svg_write(doc)
-axi_draw_svg(doc)
+# axi_draw_svg(doc)
