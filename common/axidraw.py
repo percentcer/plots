@@ -23,3 +23,18 @@ def axi_draw_paths(*paths):
     # --- finit ---------------------------------------------------------------
     ad.moveto(0,0)              # Pen-up return home
     ad.disconnect()             # Close serial port to AxiDraw
+
+def axi_draw_svg(input_svg):
+    from pyaxidraw import axidraw 
+
+    ad = axidraw.AxiDraw()
+    ad.plot_setup(input_svg)
+    
+    ad.options.speed_pendown = 40  # set pen-down speed to slow
+    ad.options.units = 2           # Switch to mm units
+    ad.options.pen_pos_down = 30
+    ad.options.pen_pos_up = 90
+    ad.options.random_start = True
+
+    # ad.options.reordering = 2
+    ad.plot_run(True)
