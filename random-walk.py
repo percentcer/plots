@@ -10,8 +10,9 @@ import random
 import numpy as np
 
 from common.math import TAU
-from common.page import PAGE_WIDTH, PAGE_HEIGHT, gen_border
-from common.svg import svg_preview
+from common.page import PAGE_WIDTH, PAGE_HEIGHT
+from common.axidraw import axi_draw_svg
+from common.svg import svg_polylines, svg_doc, svg_rects, svg_write
 
 # --- draw transforms ---------------------------------------------------------
 CX = PAGE_WIDTH / 2
@@ -53,8 +54,9 @@ def gen_walk(start_x, start_y):
     return COORDS
 
 # --- main --------------
-WALK = gen_walk(CX,CY)
-BORDER = gen_border(CX, CY, EXT, EXT)
+WALK = svg_polylines(gen_walk(CX,CY))
+BORDER = svg_rects([CX-EXT, CY-EXT, EXT*2, EXT*2])
+doc = svg_doc(*BORDER, *WALK)
 
-# axi_draw_paths(BORDER, WALK)
-svg_preview(BORDER, WALK)
+svg_write(doc)
+# axi_draw_svg(doc)

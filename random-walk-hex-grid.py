@@ -9,9 +9,9 @@ import numpy as np
 import random
 
 import common.hexgrid as hg
-from common.axidraw import axi_draw_paths
-from common.page import PAGE_WIDTH, PAGE_HEIGHT, gen_border
-from common.svg import svg_preview
+from common.axidraw import axi_draw_svg
+from common.page import PAGE_WIDTH, PAGE_HEIGHT
+from common.svg import svg_polylines, svg_doc, svg_rects, svg_write
 
 # --- draw transforms ---------------------------------------------------------
 CX = PAGE_WIDTH / 2
@@ -57,7 +57,9 @@ for seg in WALK:
         continue
 SPLITWALKS.append(_nwalk)
 
-BORDER = gen_border(CX, CY, EXT_W, EXT_H)
+BORDER = svg_rects([CX-EXT_W, CY-EXT_H, EXT_W*2, EXT_H*2])
+SPLITWALKS = svg_polylines(*SPLITWALKS)
+doc = svg_doc(*BORDER, *SPLITWALKS)
 
-# axi_draw_paths(BORDER, WALK)
-svg_preview(BORDER, *SPLITWALKS)
+svg_write(doc)
+# axi_draw_svg(doc)

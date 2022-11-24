@@ -7,11 +7,12 @@
 
 import numpy as np
 
-from common.page import PAGE_WIDTH, PAGE_HEIGHT, gen_border
-from common.svg import svg_preview
+from common.axidraw import axi_draw_svg
+from common.page import PAGE_WIDTH, PAGE_HEIGHT
+from common.svg import svg_polylines, svg_doc, svg_rects, svg_write
 
 # --- draw transforms ---------------------------------------------------------
-MAG = 4
+MAG = 1
 CX = PAGE_WIDTH / 2
 CY = PAGE_HEIGHT / 2
 SX = (PAGE_WIDTH / PAGE_HEIGHT) * MAG
@@ -40,7 +41,10 @@ PATH = np.array(gen(9, 1, 1))
 PATH = PATH - PATH[0]
 PATH = np.delete(PATH, 1, 1) # array, column [0,1,2], axis [0,1]
 PATH = PATH * [SX, SY] + [CX, CY]
-BORDER = gen_border(CX, CY, EXT_WIDTH, EXT_HEIGHT)
 
-# axi_draw_paths(BORDER, PATH)
-svg_preview(BORDER, PATH)
+BORDER = svg_rects([CX-EXT_WIDTH, CY-EXT_HEIGHT, EXT_WIDTH*2, EXT_HEIGHT*2])
+SVPATH = svg_polylines(PATH)
+doc = svg_doc(*BORDER, *SVPATH)
+
+svg_write(doc)
+# axi_draw_svg(doc)

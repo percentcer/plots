@@ -9,9 +9,10 @@ import math
 import random
 import numpy as np
 
+from common.axidraw import axi_draw_svg
 from common.math import TAU
-from common.page import PAGE_WIDTH, PAGE_HEIGHT, gen_border
-from common.svg import svg_preview
+from common.page import PAGE_WIDTH, PAGE_HEIGHT
+from common.svg import svg_polylines, svg_doc, svg_rects, svg_write
 
 # --- draw transforms ---------------------------------------------------------
 CX = PAGE_WIDTH / 2
@@ -26,7 +27,7 @@ EXT_HEIGHT = (PAGE_HEIGHT // 2) * 0.8
 STEP = 1
 
 ARC = TAU / POLYSIDES
-STEPS = 100
+STEPS = 16
 
 CARDINAL = np.array([1,0])
 PRECOMPUTED_DIRECTIONS = [
@@ -77,7 +78,9 @@ for w in WALKS:
     SPLITWALKS.append(_nwalk)
 
 # --- main --------------
-BORDER = gen_border(CX, CY, EXT_WIDTH, EXT_HEIGHT)
+BORDER = svg_rects([CX-EXT_WIDTH, CY-EXT_HEIGHT, EXT_WIDTH*2, EXT_HEIGHT*2])
+SPLITWALKS = svg_polylines(*SPLITWALKS)
+doc = svg_doc(*BORDER, *SPLITWALKS)
 
-# axi_draw_paths(BORDER, *SPLITWALKS)
-svg_preview(BORDER, *SPLITWALKS)
+svg_write(doc)
+# axi_draw_svg(doc)
