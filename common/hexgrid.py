@@ -1,24 +1,9 @@
-from typing import NamedTuple, Union
+from typing import Union
+from .types import CPoint, HexPointCubic, HexPointAxial
 import math
 
 RADIUS_OUTER = 1
 RADIUS_INNER = math.sqrt(3) / 2 * RADIUS_OUTER
-
-CPoint = NamedTuple(typename="CPoint", fields=[
-    ("x", int),
-    ("y", int)
-])
-
-HexPointCubic = NamedTuple(typename="HexPointCubic", fields=[
-    ("q", int),
-    ("r", int),
-    ("s", int),
-])
-
-HexPointAxial = NamedTuple(typename="HexPointAxial", fields=[
-    ("q", int),
-    ("r", int),
-])
 
 def hex_to_cart_flat(hp: Union[HexPointCubic, HexPointAxial]) -> CPoint:
     x = 3 / 2 * hp.q
