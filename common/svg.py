@@ -57,5 +57,14 @@ def svg_write(doc, filename="preview"):
         fsvg.write(doc)
     with open(f"{filename}.html", "w") as hsvg:
         hsvg.write(
-            f'<!DOCTYPE html><html><body style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)"><div style="background:#fafafa;border:solid 1px #e0e0e0">{doc}</div></body></html>'
+            f'''
+            <!DOCTYPE html>
+              <html>
+                <body>
+                  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fafafa;border:solid 1px #e0e0e0">
+                    {doc}
+                  </div>
+                </body>
+              </html>
+              '''
         )
