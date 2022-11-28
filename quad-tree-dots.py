@@ -40,7 +40,7 @@ def gen(scl):
     # walk the tree, each leaf should resolve in a circle (rad based on depth, position based on quad offsets)
     def walk(node, depth, pos):
         if not len(node):
-            return [(*(pos*scl+[CX,CY]), pow(0.5, depth-1) * SQRT2 * scl)]
+            return [(*(pos*scl+[CX,CY]), pow(0.5, depth-1) * SQRT2 * scl - 0.3)]
         return (
               walk(node[0], depth + 1, pos + OFFS[0] * pow(0.5, depth) * SQRT2)
             + walk(node[1], depth + 1, pos + OFFS[1] * pow(0.5, depth) * SQRT2)
@@ -51,7 +51,7 @@ def gen(scl):
 
 
 # --- main --------------
-circles = gen(48)
+circles = gen(scl=30)
 svgcircles = svg_circles(*circles)
 svgborder = svg_rects([CX - EXT_W, CY - EXT_H, EXT_W * 2, EXT_H * 2])
 doc = svg_doc(*svgborder, *svgcircles)
