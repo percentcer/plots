@@ -29,6 +29,7 @@ def svg_doc(*elements):
             viewBox="0 0 {PAGE_WIDTH + PAGE_MARGIN * 2} {PAGE_HEIGHT + PAGE_MARGIN * 2}"
             height="{PAGE_HEIGHT + PAGE_MARGIN * 2}mm"
             width="{PAGE_WIDTH + PAGE_MARGIN * 2}mm">
+        <rect width="100%" height="100%" fill="#f4f4f4"/>
         <g transform="translate({PAGE_MARGIN},{PAGE_MARGIN})">
             {text}
         </g>
