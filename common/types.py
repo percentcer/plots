@@ -1,17 +1,17 @@
 from typing import NamedTuple
 
-CPoint = NamedTuple(typename="CPoint", fields=[
+CPoint = NamedTuple("CPoint", fields=[
     ("x", float),
     ("y", float)
 ])
 
-HexPointCubic = NamedTuple(typename="HexPointCubic", fields=[
+HexPointCubic = NamedTuple("HexPointCubic", fields=[
     ("q", int),
     ("r", int),
     ("s", int),
 ])
 
-HexPointAxial = NamedTuple(typename="HexPointAxial", fields=[
+HexPointAxial = NamedTuple("HexPointAxial", fields=[
     ("q", int),
     ("r", int),
 ])
