@@ -13,3 +13,6 @@ def sign(val):
 
 def zsign(val):
     return 0 if val == 0 else sign(val)
+
+def smoothstep(t):
+    return t * t * (3-2*t)
