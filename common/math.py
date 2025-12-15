@@ -16,3 +16,6 @@ def zsign(val):
 
 def smoothstep(t):
     return t * t * (3-2*t)
+
+def dist(p):
+    return math.sqrt(p[0]*p[0] + p[1]*p[1])
