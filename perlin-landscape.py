@@ -31,13 +31,16 @@ def gen(xstep, ylines, offset_factor):
     p = Perlin(gridw,gridh)
 
     traces = []
+    offsets = []
     for ti in range(ylines):
         traces.append(list())
+        offsets.append(0)
 
     while xsamp < 1.0:
         for ti in range(ylines):
             ysamp = ystep * ti
             s = p.sample(np.array([xsamp, ysamp]))
+            offsets[ti] += s
             traces[ti].append([(CX - WORKW*0.5) + xsamp * WORKW, (CY - WORKH*0.5) + ysamp * WORKH + s * offset_factor])
         xsamp += xstep
 
