@@ -25,9 +25,9 @@ def svg_polylines(*paths):
     ]
 
 
-def svg_circles(*positions):
+def svg_circles(*positions, **kwargs):
     return [
-        f'<circle cx="{p[0]}" cy="{p[1]}" r="{p[2]}" fill="none" stroke="black" stroke-width="0.2"/>'
+        f'<circle cx="{p[0]}" cy="{p[1]}" r="{p[2]}" fill="{kwargs['fill'] or 'none'}" stroke="black" stroke-width="0.2"/>'
         for p in positions
     ]
 

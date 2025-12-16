@@ -15,6 +15,7 @@ from common.svg import svg_polylines, svg_circles, svg_doc, svg_write
 import numpy as np
 import scipy as sp
 
+import random
 import sys
 
 # --- draw transforms ---------------------------------------------------------
@@ -35,31 +36,36 @@ def gen(xstep, ylines, offset_factor):
     gridh = 10
     p = Perlin(gridw,gridh)
 
-    disk = sp.stats.qmc.PoissonDisk(2, radius=0.02)
-    samples = disk.fill_space()
-    # offset range
-    samples = [s - 0.5 for s in samples]
-    # reject samples outside of the circle
-    samples = [s for s in samples if dist(s) < 0.5]
+    # disk = sp.stats.qmc.PoissonDisk(2, radius=0.02)
+    # samples = disk.fill_space()
+    # # offset range
+    # samples = [s - 0.5 for s in samples]
+    # # reject samples outside of the circle
+    # samples = [s for s in samples if dist(s) < 0.5]
     
     # print(samples)
     # sys.exit()
 
     traces = []
+    trace_offsets = []
+    for ti in range(ylines):
+        trace_offsets.append(np.array([random.random() * 0.1, random.random() * 0.1]))
 
-    for pos in samples:
-        s = p.sample(pos)
-        offsetmod = 120 + smoothstep(dist(pos)*2) * 20
-        traces.append([CX + pos[0] * offsetmod, CY + pos[1] * offsetmod, (s + 1)])
+    # for pos in samples:
+    #     s = p.sample(pos)
+    #     offsetmod = 120 + smoothstep(dist(pos)*2) * 20
+    #     traces.append([CX + pos[0] * offsetmod, CY + pos[1] * offsetmod, (s + 5)])
 
-    # while xsamp < 1.0:
-    #     for ti in range(ylines):
-    #         ysamp = ystep * ti
-    #         s = p.sample(np.array([xsamp, ysamp]))
-    #         traces.append([
-    #             (CX - WORKW * 0.5) + xsamp * WORKW, (CY - WORKH*0.5) + ysamp * WORKH, smoothstep(s * 0.5 + 0.5) * offset_factor
-    #             ])
-    #     xsamp += xstep
+    while xsamp < 1.0:
+        for ti in range(ylines):
+            ysamp = ystep * ti
+            s = p.sample(np.array([xsamp, ysamp]))
+            xoff = xsamp + trace_offsets[ti][0]
+            if xoff < (1 - trace_offsets[ti][1]):
+                traces.append([
+                    (CX - WORKW * 0.5) + (xsamp + trace_offsets[ti][0]) * WORKW, (CY - WORKH * 0.5) + ysamp * WORKH + ystep * WORKH * 0.5, smoothstep(s * 0.5 + 0.5) * offset_factor
+                    ])
+        xsamp += xstep
 
     # # debug grid lines
     # for xi in range(gridw):
@@ -77,8 +83,8 @@ def gen(xstep, ylines, offset_factor):
 
 
 # --- main --------------
-result = gen(0.02, 20, 3)
-circles = svg_circles(*result)
+result = gen(0.005, 10, 7)
+circles = svg_circles(*result, fill='white')
 doc = svg_doc(*circles)
 
 svg_write(doc)
