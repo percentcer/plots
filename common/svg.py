@@ -1,4 +1,4 @@
-from common.page import PAGE_WIDTH, PAGE_HEIGHT, PAGE_MARGIN
+from common.page import PAGE_WIDTH, PAGE_HEIGHT
 
 # --- svg preview -------------------------------------------------------------
 def svg_pointlist(points):
@@ -42,12 +42,10 @@ def svg_doc(*elements):
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
             id="test"
-            viewBox="0 0 {PAGE_WIDTH + PAGE_MARGIN * 2} {PAGE_HEIGHT + PAGE_MARGIN * 2}"
-            height="{PAGE_HEIGHT + PAGE_MARGIN * 2}mm"
-            width="{PAGE_WIDTH + PAGE_MARGIN * 2}mm">
-        <g transform="translate({PAGE_MARGIN},{PAGE_MARGIN})">
+            viewBox="0 0 {PAGE_WIDTH} {PAGE_HEIGHT}"
+            height="{PAGE_HEIGHT}mm"
+            width="{PAGE_WIDTH}mm">
             {text}
-        </g>
         </svg>
         """
 
