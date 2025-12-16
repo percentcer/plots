@@ -1,4 +1,6 @@
 import math
+from math import sin, cos
+import numpy as np
 
 # --- math --------------------------------------------------------------------
 TAU = 6.28
@@ -19,3 +21,9 @@ def smoothstep(t):
 
 def dist(p):
     return math.sqrt(p[0]*p[0] + p[1]*p[1])
+
+def rot(a):
+    return np.array([
+        [cos(a), -sin(a)],
+        [sin(a), cos(a)]
+    ])
