@@ -1,8 +1,10 @@
 from .math import TAU, smoothstep
 from .types import CPoint
-from math import cos, sin
+from math import cos, sin, sqrt
 import random
 import numpy as np
+
+PERLIN_MAX = sqrt(0.5) # https://digitalfreepen.com/2017/06/20/range-perlin-noise.html
 
 class Perlin:
     gradient_vectors = []
@@ -79,4 +81,4 @@ class Perlin:
 
         blend = lerp_u @ (dot_mat.T @ lerp_v)
 
-        return blend
+        return blend / PERLIN_MAX

@@ -11,9 +11,9 @@ def svg_margins():
     ]
 
 
-def svg_rects(*specs):
+def svg_rects(*specs, **kwargs):
     return [
-        f'<rect x="{r[0]}" y="{r[1]}" width="{r[2]}" height="{r[3]}" fill="none" stroke="black" stroke-width="0.2"/>'
+        f'<rect x="{r[0]}" y="{r[1]}" width="{r[2]}" height="{r[3]}" fill="{kwargs.get('fill', 'none')}"  stroke="{kwargs.get('fill', 'black')}" stroke-width="0.2"/>'
         for r in specs
     ]
 
@@ -27,9 +27,21 @@ def svg_polylines(*paths):
 
 def svg_circles(*positions, **kwargs):
     return [
-        f'<circle cx="{p[0]}" cy="{p[1]}" r="{p[2]}" fill="{kwargs['fill'] or 'none'}" stroke="black" stroke-width="0.2"/>'
+        f'<circle cx="{p[0]}" cy="{p[1]}" r="{p[2]}" fill="{kwargs.get('fill', 'none')}" stroke="black" stroke-width="0.2"/>'
         for p in positions
     ]
+
+
+def svg_frame(pct):
+    margin = min(PAGE_HEIGHT, PAGE_WIDTH) * pct
+    specs = [
+        [0, 0, PAGE_WIDTH, margin],
+        [0, 0, margin, PAGE_HEIGHT],
+        [0, PAGE_HEIGHT - margin, PAGE_WIDTH, margin],
+        [PAGE_WIDTH - margin, 0, margin, PAGE_HEIGHT]
+    ]
+    border = [margin, margin, PAGE_WIDTH - 2 * margin, PAGE_HEIGHT - 2 * margin]
+    return [*svg_rects(*specs, fill='white', stroke='none'), *svg_rects(border)]
 
 
 def svg_doc(*elements):

@@ -36,6 +36,7 @@ def axi_draw_svg(input_svg):
     ad.options.pen_pos_up = 60
     ad.options.random_start = True
     ad.options.hiding = True # enable hidden line removal
+    ad.options.auto_rotate = False
 
     # ad.options.reordering = 2
     ad.plot_run(True)
